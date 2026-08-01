@@ -1,0 +1,10 @@
+# Nostalgia Snake — keep the repo clean and PII-free.
+# The game is a single offline file; nothing here is build output.
+.DS_Store
+Thumbs.db
+*.log
+*.pyc
+__pycache__/
+node_modules/
+.venv/
+.env

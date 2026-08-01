@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Nostalgia Snake — a tiny stress reliever</title>
+<style>
+  :root {
+    --bg:#0d1117; --panel:#161b22; --snake:#3ad17b; --snake-head:#5be39a;
+    --food:#ff5b5b; --grid:#21262d; --txt:#e6edf3; --accent:#58a6ff;
+    --muted:#8b949e;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--txt);
+    font-family: ui-monospace, "Cascadia Code", Menlo, Consolas, "Courier New", monospace;
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 14px; padding: 16px;
+    -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent;
+  }
+  h1 { font-size: 20px; font-weight: 700; margin: 0; letter-spacing: .4px; text-align: center; }
+  .tag { color: var(--muted); font-size: 12px; text-align: center; max-width: 460px; line-height: 1.5; margin: -6px 0 2px; }
+  .bar { display: flex; justify-content: space-between; width: 100%; max-width: 460px; font-size: 14px; }
+  .score { color: var(--snake); font-weight: 700; }
+  .best { color: var(--accent); font-weight: 700; }
+  .wrap { background: var(--panel); padding: 16px; border-radius: 16px; box-shadow: 0 12px 44px rgba(0,0,0,.45); }
+  canvas { background: var(--grid); border-radius: 10px; display: block; image-rendering: pixelated; touch-action: none; width: 100%; height: auto; max-width: 460px; }
+  .controls { display: flex; justify-content: center; gap: 10px; align-items: center; width: 100%; max-width: 460px; flex-wrap: wrap; }
+  button {
+    background: var(--accent); color: #06111f; border: none; padding: 9px 18px;
+    border-radius: 9px; font-weight: 700; cursor: pointer; font-family: inherit; font-size: 14px;
+  }
+  button.ghost { background: transparent; color: var(--muted); }
+  button:active { transform: translateY(1px); }
+  .status { color: var(--muted); font-size: 13px; min-height: 18px; text-align: center; }
+  .over { color: var(--food); font-weight: 700; }
+  .hint { color: var(--muted); font-size: 12px; text-align: center; max-width: 460px; line-height: 1.5; }
+  footer { color: var(--muted); font-size: 11px; text-align: center; max-width: 460px; margin-top: 2px; }
+</style>
+</head>
+<body>
+  <h1>🐍 Nostalgia Snake</h1>
+  <p class="tag">A little break for busy brains. Chase the dot, dodge yourself, and remember the good old arcade afternoons.</p>
+  <div class="bar">
+    <span>Score: <span id="score" class="score">0</span></span>
+    <span>Best: <span id="best" class="best">0</span></span>
+  </div>
+  <div class="wrap">
+    <canvas id="game" width="460" height="460"></canvas>
+  </div>
+  <div class="controls">
+    <button id="restart">New Game</button>
+    <button id="pause" class="ghost">Pause</button>
+    <span id="status" class="status"></span>
+  </div>
+  <p class="hint">Move with <b>Arrow keys</b> or <b>WASD</b>. On touch screens, <b>swipe</b> to steer. Space pauses. No installs, no accounts — just play.</p>
+  <footer>Built for us. A small open-source toy made with a little AI help.</footer>
+
+<script>
+(() => {
+  "use strict";
+  const canvas = document.getElementById("game");
+  const ctx = canvas.getContext("2d");
+  const CELL = 20;
+  const COLS = canvas.width / CELL;
+  const ROWS = canvas.height / CELL;
+  const BEST_KEY = "nostalgia-snake-best";
+
+  const el = {
+    score: document.getElementById("score"),
+    best: document.getElementById("best"),
+    status: document.getElementById("status"),
+    restart: document.getElementById("restart"),
+    pause: document.getElementById("pause"),
+  };
+
+  let snake, dir, nextDir, food, score, best, alive, paused;
+  let tickMs = 110, acc = 0, last = 0, raf = null, started = false;
+
+  try { best = parseInt(localStorage.getItem(BEST_KEY) || "0", 10) || 0; }
+  catch (_) { best = 0; }
+  el.best.textContent = best;
+
+  function reset() {
+    snake = [{ x: Math.floor(COLS / 2), y: Math.floor(ROWS / 2) }];
+    dir = { x: 1, y: 0 };
+    nextDir = { x: 1, y: 0 };
+    score = 0; alive = true; paused = false;
+    placeFood();
+    el.status.textContent = "";
+    el.score.textContent = "0";
+    el.pause.textContent = "Pause";
+  }
+
+  function placeFood() {
+    let p;
+    do {
+      p = { x: Math.floor(Math.random() * COLS), y: Math.floor(Math.random() * ROWS) };
+    } while (snake.some(s => s.x === p.x && s.y === p.y));
+    food = p;
+  }
+
+  function setStatus(html, cls) {
+    el.status.innerHTML = cls ? `<span class="${cls}">${html}</span>` : html;
+  }
+
+  function step() {
+    dir = nextDir;
+    const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+    if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= ROWS ||
+        snake.some(s => s.x === head.x && s.y === head.y)) {
+      alive = false;
+      if (score > best) {
+        best = score;
+        el.best.textContent = best;
+        try { localStorage.setItem(BEST_KEY, String(best)); } catch (_) {}
+      }
+      setStatus("Game over — press New Game", "over");
+      return;
+    }
+    snake.unshift(head);
+    if (head.x === food.x && head.y === food.y) {
+      score++;
+      el.score.textContent = score;
+      // Speed up gently as you grow, with a floor so it stays fun.
+      tickMs = Math.max(60, 110 - Math.floor(score / 3) * 4);
+      placeFood();
+    } else {
+      snake.pop();
+    }
+  }
+
+  function css(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+
+  function draw() {
+    ctx.fillStyle = css("--grid");
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // subtle grid
+    ctx.strokeStyle = "rgba(255,255,255,0.03)";
+    ctx.lineWidth = 1;
+    for (let i = 1; i < COLS; i++) {
+      ctx.beginPath(); ctx.moveTo(i * CELL, 0); ctx.lineTo(i * CELL, canvas.height); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, i * CELL); ctx.lineTo(canvas.width, i * CELL); ctx.stroke();
+    }
+    // food
+    ctx.fillStyle = css("--food");
+    ctx.beginPath();
+    ctx.arc(food.x * CELL + CELL / 2, food.y * CELL + CELL / 2, CELL / 2 - 2, 0, Math.PI * 2);
+    ctx.fill();
+    // snake
+    ctx.fillStyle = css("--snake");
+    snake.forEach((s, i) => {
+      ctx.fillRect(s.x * CELL + 1, s.y * CELL + 1, CELL - 2, CELL - 2);
+    });
+    // head highlight
+    const h = snake[0];
+    ctx.fillStyle = css("--snake-head");
+    ctx.fillRect(h.x * CELL + 1, h.y * CELL + 1, CELL - 2, CELL - 2);
+
+    if (paused && alive) {
+      ctx.fillStyle = "rgba(13,17,23,0.6)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = css("--txt");
+      ctx.font = "20px ui-monospace, monospace";
+      ctx.textAlign = "center";
+      ctx.fillText("Paused", canvas.width / 2, canvas.height / 2);
+    }
+  }
+
+  function loop(ts) {
+    raf = requestAnimationFrame(loop);
+    if (!alive) { draw(); return; }
+    if (paused) { last = ts; draw(); return; }
+    acc += ts - last; last = ts;
+    if (acc >= tickMs) { acc = 0; step(); }
+    draw();
+  }
+
+  const KEYMAP = {
+    ArrowUp: { x: 0, y: -1 }, ArrowDown: { x: 0, y: 1 }, ArrowLeft: { x: -1, y: 0 }, ArrowRight: { x: 1, y: 0 },
+    w: { x: 0, y: -1 }, s: { x: 0, y: 1 }, a: { x: -1, y: 0 }, d: { x: 1, y: 0 },
+    W: { x: 0, y: -1 }, S: { x: 0, y: 1 }, A: { x: -1, y: 0 }, D: { x: 1, y: 0 },
+  };
+
+  function tryTurn(nd) {
+    if (!nd) return;
+    // disallow 180° reversals (instant death) using the committed direction
+    if (nd.x === -dir.x && nd.y === -dir.y) return;
+    nextDir = nd;
+  }
+
+  window.addEventListener("keydown", e => {
+    if (e.key === " " || e.code === "Space") {
+      e.preventDefault();
+      if (alive) { paused = !paused; el.pause.textContent = paused ? "Resume" : "Pause"; if (paused) setStatus("Paused"); else setStatus(""); }
+      return;
+    }
+    const nd = KEYMAP[e.key];
+    if (nd) { tryTurn(nd); e.preventDefault(); }
+  });
+
+  // Touch / swipe steering
+  let touchStart = null;
+  canvas.addEventListener("touchstart", e => {
+    if (e.touches.length) { touchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY }; }
+  }, { passive: true });
+  canvas.addEventListener("touchmove", e => { if (touchStart) e.preventDefault(); }, { passive: false });
+  canvas.addEventListener("touchend", e => {
+    if (!touchStart) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - touchStart.x, dy = t.clientY - touchStart.y;
+    if (Math.abs(dx) < 18 && Math.abs(dy) < 18) { touchStart = null; return; }
+    if (Math.abs(dx) > Math.abs(dy)) tryTurn({ x: dx > 0 ? 1 : -1, y: 0 });
+    else tryTurn({ x: 0, y: dy > 0 ? 1 : -1 });
+    touchStart = null;
+  }, { passive: true });
+
+  el.restart.addEventListener("click", () => {
+    reset();
+    if (!started) { started = true; last = performance.now(); acc = 0; }
+  });
+  el.pause.addEventListener("click", () => {
+    if (!alive) return;
+    paused = !paused;
+    el.pause.textContent = paused ? "Resume" : "Pause";
+    if (paused) setStatus("Paused"); else setStatus("");
+  });
+
+  reset();
+  started = true;
+  last = performance.now(); acc = 0;
+  raf = requestAnimationFrame(loop);
+
+  // Test-only export (no effect in browsers; used by smoke_test.js under Node).
+  if (typeof module !== "undefined" && module.exports) {
+    module.exports = {
+      _test: {
+        reset, step, placeFood,
+        state: () => ({ snake, dir, nextDir, food, score, best, alive, paused }),
+        setNextDir: d => { nextDir = d; },
+        forceFood: p => { food = p; },
+        setSnake: s => { snake = s; },
+      },
+    };
+  }
+})();
+</script>
+</body>
+</html>
