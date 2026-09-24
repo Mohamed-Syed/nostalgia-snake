@@ -548,6 +548,15 @@
     speedPreset = localStorage.getItem(STORAGE_SPEED) || "normal";
   } catch (_) {}
 
+  try {
+    if (typeof window !== "undefined" && window.location && window.location.search) {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has("theme")) theme = urlParams.get("theme");
+      if (urlParams.has("mode")) mode = urlParams.get("mode");
+      if (urlParams.has("speed")) speedPreset = urlParams.get("speed");
+    }
+  } catch (_) {}
+
   document.body.setAttribute("data-theme", theme);
   UI.themeSelect.value = theme;
   UI.modeSelect.value = mode;
@@ -625,6 +634,27 @@
     UI.combo.textContent = "1x";
     UI.overlay.classList.remove("active");
     UI.pauseBtn.textContent = "⏸";
+
+    try {
+      if (typeof window !== "undefined" && window.location && window.location.search) {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get("demo") === "1") {
+          snake = [
+            { x: 13, y: 11 }, { x: 12, y: 11 }, { x: 11, y: 11 },
+            { x: 11, y: 12 }, { x: 11, y: 13 }, { x: 10, y: 13 },
+            { x: 9, y: 13 }, { x: 8, y: 13 }
+          ];
+          prevSnake = snake.map(s => ({ ...s }));
+          food = { x: 17, y: 11 };
+          bonusFood = { x: 13, y: 7, timeLeft: 5200, maxTime: 8000 };
+          score = 240;
+          foodsEaten = 14;
+          comboCount = 3;
+          UI.score.textContent = "240";
+          UI.combo.textContent = "3x";
+        }
+      }
+    } catch (_) {}
   }
 
   function placeFood() {

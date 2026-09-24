@@ -1,68 +1,107 @@
 # 🐍 Nostalgia Snake (v2.0)
 
-A polished, self-contained Snake arcade game you can play right in your browser — zero installs, zero accounts, no build step, and 100% offline.
+<p align="center">
+  <img src="assets/banner.jpg" alt="Nostalgia Snake Banner" width="100%" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);" />
+</p>
 
-> **Need a breather?** Chase the dot, dodge yourself, and let the old-school arcade buzz melt the day away. It's just a little something fun to play when work piles up and the childhood arcade afternoons feel far away. Built for us.
+<p align="center">
+  <img src="https://img.shields.io/badge/version-2.0.0-emerald?style=for-the-badge&logo=retroarch" alt="Version 2.0" />
+  <img src="https://img.shields.io/badge/status-100%25_offline-blue?style=for-the-badge" alt="100% Offline" />
+  <img src="https://img.shields.io/badge/tests-14%2F14_passing-brightgreen?style=for-the-badge" alt="Tests" />
+  <img src="https://img.shields.io/badge/dependencies-0_zero-success?style=for-the-badge" alt="Zero Dependencies" />
+  <img src="https://img.shields.io/badge/license-MIT-purple?style=for-the-badge" alt="License" />
+</p>
+
+A polished, self-contained modern retro Snake arcade game you can play directly in your browser — zero installs, zero accounts, no build tools, and 100% offline.
+
+> **Need a breather?** Chase the dot, dodge yourself, and let the old-school arcade buzz melt the day away. Built for coffee breaks, nostalgia trips, and simple arcade joy.
 
 ---
 
-## ▶️ How to play
+## 🆕 What's New in v2.0
 
-1. **Open `index.html`** in any modern browser (double-click it or drag into a tab).
+| Feature | Description |
+| :--- | :--- |
+| 🚀 **Silky 60+ FPS Movement** | Decoupled simulation ticks and sub-cell interpolation glide the snake continuously instead of choppy block hopping. |
+| 🎮 **2-Step Input Queue** | High-precision cornering buffer prevents missed turns and completely blocks accidental 180° self-collisions. |
+| 🎨 **4 Selectable Themes** | Switch instantly between **Neon Arcade**, authentic **Nokia 3310 LCD**, **80s CRT Synthwave**, and **Midnight Minimal**. |
+| 🔊 **Procedural Web Audio** | Pure synthesized 8-bit retro sound effects (eat chimes, bonus fanfare, crash buzz) with 0 external sound files. |
+| ⭐ **Dynamic Bonus & Combos** | Timed **Golden Star Bonus** with radial countdown timer ring, plus up to **5x combo multipliers** for fast eating. |
+| 👀 **Expressive Snake Aesthetics** | Animated eyes that look toward your travel direction and glance at food, subtle tongue flicking, and organic body tapering. |
+| 📱 **Mobile D-Pad & Haptics** | Touch swipe gestures + on-screen virtual tactile D-Pad and haptic vibration feedback on phones and tablets. |
+| 🔄 **Modes & Difficulty** | Choose between **Classic (Walls)** or **Wrap-Around (Portal)**, across **Relaxed**, **Normal**, and **Turbo** speeds. |
+| 🧪 **Automated Test Suite** | 14/14 automated unit tests verifying core game physics, turn queueing, and scoring logic. |
+
+---
+
+## 📸 Theme Showcase
+
+<p align="center">
+  <img src="assets/preview-neon.png" width="31%" alt="Neon Arcade Theme" style="border-radius: 8px;" />
+  <img src="assets/preview-nokia.png" width="31%" alt="Nokia 3310 Theme" style="border-radius: 8px;" />
+  <img src="assets/preview-synthwave.png" width="31%" alt="80s CRT Synthwave Theme" style="border-radius: 8px;" />
+</p>
+
+<p align="center">
+  <i><b>Neon Cyber Arcade</b> • <b>Nokia 3310 LCD Dot-Matrix</b> • <b>80s Synthwave CRT</b></i>
+</p>
+
+---
+
+## ▶️ How to Play
+
+1. **Open `index.html`** in any modern web browser (double-click it or drag it into any tab).
 2. **Steer:**
    - **Keyboard:** Arrow keys, `WASD`, or `HJKL` (Vim keys).
-   - **Mobile / Touch:** Swipe anywhere on the board or use the on-screen **Virtual D-Pad**.
-3. **Shortcuts:**
+   - **Mobile / Touch:** Swipe anywhere on the board or tap the on-screen **Virtual D-Pad**.
+3. **Controls & Shortcuts:**
    - <kbd>Space</kbd> / <kbd>P</kbd>: Pause & Resume.
    - <kbd>R</kbd>: Quick Restart.
-   - <kbd>M</kbd>: Mute / Unmute sound.
+   - <kbd>M</kbd>: Mute / Unmute audio.
    - <kbd>T</kbd>: Cycle visual theme.
-4. **Eat to Grow:**
+4. **Food & Scoring:**
    - **Red Apple / Orb:** Standard food (+10 pts × combo multiplier).
    - **Golden Star / Bonus:** Timed bonus item spawning every 5 food items (+50 pts × combo).
-   - **Combo Multipliers:** Eat quickly within 4.5s to chain combos up to **5x**!
-5. **Game Over & Stats:** View final score, foods eaten, survival time, and personal records.
+   - **Combo Multipliers:** Eat quickly within 4.5 seconds to build combo streaks up to **5x**!
+5. **Run Summary:** Review your final score, high score record alert, food eaten, survival time, and maximum length.
 
 ---
 
-## ✨ Features
+## 🛠️ Run & Verify
 
-- **Silky Smooth 60+ FPS Motion:** Decoupled simulation ticks and sub-cell interpolation glide the snake continuously instead of choppy block teleportation.
-- **Input Buffer Queue:** 2-step turn buffering prevents dropped inputs during rapid cornering and blocks accidental 180° self-collisions.
-- **4 Selectable Visual Themes:**
-  - 🌟 **Neon Arcade (Default):** Radiant cyber glow, emerald snake, ruby food, particle bursts.
-  - 📟 **Nokia 3310:** Authentic retro LCD dot-matrix green palette and chunky pixel styling.
-  - 🕹️ **80s CRT Synthwave:** Phosphor magenta/cyan grid, scanline CRT overlay, and arcade nostalgia.
-  - 🌙 **Midnight Minimal:** Clean, elegant dark slate palette with soft shadows.
-- **Procedural Web Audio SFX:** 100% synthesized 8-bit sound effects (eat chimes, golden fanfare, crash buzz, combo escalation) with zero external audio assets.
-- **HiDPI / Retina Crisp:** Automatic `devicePixelRatio` scaling ensures crystal clarity on 4K, laptops, and mobile screens.
-- **Game Modes:**
-  - **Classic (Walls):** Outer walls are fatal.
-  - **Wrap-Around (Portal):** Snake wraps seamlessly across board edges.
-- **Difficulty Speeds:** Relaxed (chill unwinding), Normal (arcade ramp), and Turbo (high-adrenaline challenge).
-- **Expressive Snake Aesthetics:** Animated eyes that follow your direction and glance toward food, with occasional tongue flicks and smooth tapering body joints.
-- **Mobile First:** Responsive layout, touch swipe gestures, on-screen tactile D-Pad, and haptic feedback.
-- **100% Offline & Single-File:** Lives entirely in a single `index.html` file with zero dependencies.
-
----
-
-## 🛠️ Run it your way
-
-- **Simplest:** Double-click or open `index.html` directly in your browser.
-- **Local server (optional):**
+- **Simplest:** Double-click or open `index.html` in your browser.
+- **Local Server (optional):**
   ```bash
   python3 -m http.server 8000
   # or
   npx serve .
   ```
-  Visit `http://localhost:8000`.
-- **Automated Tests:**
+- **Run Automated Logic Tests:**
   ```bash
   node test_snake.js
+  ```
+  ```text
+  Running Nostalgia Snake logic tests...
+    ✓ Snake is alive on reset
+    ✓ Score is 0 on reset
+    ✓ Snake initial length is 3
+    ✓ Initial direction is right
+    ✓ Snake stepped right
+    ✓ Length remained constant while moving
+    ✓ 180-degree reversal is blocked
+    ✓ Snake turned down
+    ✓ Snake grew after eating food
+    ✓ Score increased after eating food
+    ✓ Snake died hitting wall in Classic mode
+    ✓ Snake alive after crossing boundary in Wrap mode
+    ✓ Snake wrapped around to x=0
+    ✓ Snake died on self-collision
+
+  Test results: 14 passed, 0 failed
   ```
 
 ---
 
 ## 📜 License
 
-MIT — do whatever you like, just keep the notice.
+MIT — feel free to fork, customize colors, or make it yours!
