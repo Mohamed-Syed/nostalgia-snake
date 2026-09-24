@@ -129,3 +129,7 @@ curl -sLO https://raw.githubusercontent.com/Mohamed-Syed/nostalgia-snake/main/in
 ## 📜 License
 
 MIT — feel free to fork, customize colors, or make it yours!
+
+---
+
+_Author's note: this little toy was built with a bit of AI help, adapted for a network engineer's coffee-break nostalgia. Play it, laugh at the high-score chase, and remember the good old days._
