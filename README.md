@@ -1,46 +1,68 @@
-# 🐍 Nostalgia Snake
+# 🐍 Nostalgia Snake (v2.0)
 
-A tiny, self-contained Snake game you can play right in your browser — no installs, no accounts, no build step, no internet required.
+A polished, self-contained Snake arcade game you can play right in your browser — zero installs, zero accounts, no build step, and 100% offline.
 
 > **Need a breather?** Chase the dot, dodge yourself, and let the old-school arcade buzz melt the day away. It's just a little something fun to play when work piles up and the childhood arcade afternoons feel far away. Built for us.
 
+---
+
 ## ▶️ How to play
 
-1. **Open `index.html`** in any modern browser (double-click it, or drag it into a browser tab).
-2. Steer with **Arrow keys** or **WASD**.
-3. On phones/tablets, **swipe** on the board to change direction.
-4. **Space** (or the Pause button) pauses. **New Game** restarts.
-5. Eat the red dot to grow and score. Don't hit the walls or your own tail.
-6. Your **best score** is saved locally on your device — it stays with you, nothing is uploaded.
+1. **Open `index.html`** in any modern browser (double-click it or drag into a tab).
+2. **Steer:**
+   - **Keyboard:** Arrow keys, `WASD`, or `HJKL` (Vim keys).
+   - **Mobile / Touch:** Swipe anywhere on the board or use the on-screen **Virtual D-Pad**.
+3. **Shortcuts:**
+   - <kbd>Space</kbd> / <kbd>P</kbd>: Pause & Resume.
+   - <kbd>R</kbd>: Quick Restart.
+   - <kbd>M</kbd>: Mute / Unmute sound.
+   - <kbd>T</kbd>: Cycle visual theme.
+4. **Eat to Grow:**
+   - **Red Apple / Orb:** Standard food (+10 pts × combo multiplier).
+   - **Golden Star / Bonus:** Timed bonus item spawning every 5 food items (+50 pts × combo).
+   - **Combo Multipliers:** Eat quickly within 4.5s to chain combos up to **5x**!
+5. **Game Over & Stats:** View final score, foods eaten, survival time, and personal records.
 
-That's it. Plug and play.
+---
 
 ## ✨ Features
 
-- 100% offline — a single HTML file, zero dependencies, no CDN, no fonts to fetch.
-- Works on desktop and mobile (keyboard + touch swipe).
-- Gently speeds up as you grow, so it stays challenging but fair.
-- Best score persists via `localStorage` (stays on your device only).
-- Clean, readable code in one file — fork it, tweak the colors, make it yours.
+- **Silky Smooth 60+ FPS Motion:** Decoupled simulation ticks and sub-cell interpolation glide the snake continuously instead of choppy block teleportation.
+- **Input Buffer Queue:** 2-step turn buffering prevents dropped inputs during rapid cornering and blocks accidental 180° self-collisions.
+- **4 Selectable Visual Themes:**
+  - 🌟 **Neon Arcade (Default):** Radiant cyber glow, emerald snake, ruby food, particle bursts.
+  - 📟 **Nokia 3310:** Authentic retro LCD dot-matrix green palette and chunky pixel styling.
+  - 🕹️ **80s CRT Synthwave:** Phosphor magenta/cyan grid, scanline CRT overlay, and arcade nostalgia.
+  - 🌙 **Midnight Minimal:** Clean, elegant dark slate palette with soft shadows.
+- **Procedural Web Audio SFX:** 100% synthesized 8-bit sound effects (eat chimes, golden fanfare, crash buzz, combo escalation) with zero external audio assets.
+- **HiDPI / Retina Crisp:** Automatic `devicePixelRatio` scaling ensures crystal clarity on 4K, laptops, and mobile screens.
+- **Game Modes:**
+  - **Classic (Walls):** Outer walls are fatal.
+  - **Wrap-Around (Portal):** Snake wraps seamlessly across board edges.
+- **Difficulty Speeds:** Relaxed (chill unwinding), Normal (arcade ramp), and Turbo (high-adrenaline challenge).
+- **Expressive Snake Aesthetics:** Animated eyes that follow your direction and glance toward food, with occasional tongue flicks and smooth tapering body joints.
+- **Mobile First:** Responsive layout, touch swipe gestures, on-screen tactile D-Pad, and haptic feedback.
+- **100% Offline & Single-File:** Lives entirely in a single `index.html` file with zero dependencies.
+
+---
 
 ## 🛠️ Run it your way
 
-- **Simplest:** just open `index.html`.
-- **Local server (optional):** `python3 -m http.server` then visit `http://localhost:8000`.
-- **GitHub Pages:** enable it on the repo's `main` branch (`/root`) and share the link.
+- **Simplest:** Double-click or open `index.html` directly in your browser.
+- **Local server (optional):**
+  ```bash
+  python3 -m http.server 8000
+  # or
+  npx serve .
+  ```
+  Visit `http://localhost:8000`.
+- **Automated Tests:**
+  ```bash
+  node test_snake.js
+  ```
 
-## 📦 Make it yours
-
-Everything lives in `index.html`. Change the CSS variables at the top (colors), `tickMs` (speed), or `CELL`/`COLS`/`ROWS` (board size) to remix the feel.
-
-## 🤝 Contributing
-
-Open an issue or PR — ideas, themes, and polish are all welcome. Keep it small, fun, and dependency-free.
+---
 
 ## 📜 License
 
 MIT — do whatever you like, just keep the notice.
-
----
-
-_Author's note: this little toy was built with a bit of AI help, adapted for a network engineer's coffee-break nostalgia. Play it, laugh at the high-score chase, and remember the good old days._
