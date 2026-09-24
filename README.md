@@ -18,6 +18,30 @@ A polished, self-contained modern retro Snake arcade game you can play directly 
 
 ---
 
+## ⚡ Instant Download & Play (Zero Setup)
+
+### 📥 1-Click Download Options:
+- 🟢 **[Download `index.html` (Standalone Single File)](https://raw.githubusercontent.com/Mohamed-Syed/nostalgia-snake/main/index.html)** *(Right-click → "Save link as...")*
+- 📦 **[Download Full Repository (.ZIP)](https://github.com/Mohamed-Syed/nostalgia-snake/archive/refs/heads/main.zip)**
+
+### 🕹️ How to Run:
+1. **Download:** Save [`index.html`](https://raw.githubusercontent.com/Mohamed-Syed/nostalgia-snake/main/index.html) anywhere on your machine (e.g., Desktop or Downloads).
+2. **Launch:** Double-click `index.html`. It opens directly in your default web browser (Chrome, Edge, Brave, Safari, Firefox).
+3. **Play:** Start steering with Arrow keys or `WASD` immediately! No internet connection, server, or build step needed.
+
+#### 💻 One-Line Terminal Command:
+**Windows (PowerShell):**
+```powershell
+curl.exe -LO https://raw.githubusercontent.com/Mohamed-Syed/nostalgia-snake/main/index.html; start index.html
+```
+
+**macOS / Linux:**
+```bash
+curl -sLO https://raw.githubusercontent.com/Mohamed-Syed/nostalgia-snake/main/index.html && open index.html
+```
+
+---
+
 ## 🆕 What's New in v2.0
 
 | Feature | Description |
