@@ -46,12 +46,15 @@ curl -sLO https://raw.githubusercontent.com/Mohamed-Syed/nostalgia-snake/main/in
 
 | Feature | Description |
 | :--- | :--- |
-| 🚀 **Silky 60+ FPS Movement** | Decoupled simulation ticks and sub-cell interpolation glide the snake continuously instead of choppy block hopping. |
+| 📐 **Board Resizing & Fullscreen** | Choose your view size: **Compact (420px)**, **Medium (500px)**, **Large (620px)**, **XL (740px)**, or **Auto-Fit (Fluid)**, plus 1-click **Fullscreen [⛶]**! |
+| 🚀 **Silky 60+ FPS Movement** | Continuous sub-cell interpolation and smooth capsule body curves eliminate blocky stutter on 60Hz, 120Hz, and 144Hz displays. |
+| 🎨 **Enhanced 3D Graphics** | Glossy spine highlights, animated eyelid blinks, pupil food-tracking, cute blush cheeks, and juicy apples with specular shine. |
+| ❄️ **Chill Slow-Mo Powerup** | Rare sapphire ice berries grant 5 seconds of calm slow-motion with frosty trails for escaping tight corners. |
+| 🎵 **Procedural Synth Music** | Optional rhythmic 8-bit arcade bassline loop that speeds up with your tempo (toggleable with `🎵` or <kbd>N</kbd>). |
 | 🎮 **2-Step Input Queue** | High-precision cornering buffer prevents missed turns and completely blocks accidental 180° self-collisions. |
 | 🎨 **4 Selectable Themes** | Switch instantly between **Neon Arcade**, authentic **Nokia 3310 LCD**, **80s CRT Synthwave**, and **Midnight Minimal**. |
 | 🔊 **Procedural Web Audio** | Pure synthesized 8-bit retro sound effects (eat chimes, bonus fanfare, crash buzz) with 0 external sound files. |
-| ⭐ **Dynamic Bonus & Combos** | Timed **Golden Star Bonus** with radial countdown timer ring, plus up to **5x combo multipliers** for fast eating. |
-| 👀 **Expressive Snake Aesthetics** | Animated eyes that look toward your travel direction and glance at food, subtle tongue flicking, and organic body tapering. |
+| ⭐ **Dynamic Bonus & Combos** | Timed **Golden Star Bonus** with countdown ring, plus a live animated **combo energy meter** up to **5x multipliers**. |
 | 📱 **Mobile D-Pad & Haptics** | Touch swipe gestures + on-screen virtual tactile D-Pad and haptic vibration feedback on phones and tablets. |
 | 🔄 **Modes & Difficulty** | Choose between **Classic (Walls)** or **Wrap-Around (Portal)**, across **Relaxed**, **Normal**, and **Turbo** speeds. |
 | 🧪 **Automated Test Suite** | 14/14 automated unit tests verifying core game physics, turn queueing, and scoring logic. |

@@ -16,10 +16,13 @@ const mockElement = () => ({
   className: "",
   width: 460,
   height: 460,
-  style: {},
+  style: {
+    setProperty: () => {},
+  },
   classList: {
     add: () => {},
     remove: () => {},
+    toggle: () => {},
     contains: () => false,
   },
   setAttribute: () => {},
